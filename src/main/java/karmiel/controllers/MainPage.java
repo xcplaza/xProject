@@ -12,9 +12,16 @@ public class MainPage {
         model.addAttribute("title", "Главная");
         return "home";
     }
+
     @GetMapping("/about")
     public String about(Model model) {
-        model.addAttribute("title", "Главная");
-        return "home";
+        model.addAttribute("title", "О нас");
+        return "about";
+    }
+
+    @GetMapping("/auto")
+    public String auto(Model model) {
+        model.addAttribute("title", "Автомобили");
+        return "auto";
     }
 }
