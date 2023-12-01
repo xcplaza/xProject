@@ -12,14 +12,18 @@
     <button type="button" class="btn btn-primary mt-2" onclick="window.location.href='/auto/add'">Добавить</button>
     <div th:each="car : ${auto}" class="alert alert-info mt-2">
         <h3 th:text="${car.name}"></h3>
-        <p th:text="${car.price}"></p>
-        <p th:text="${car.year}"></p>
-        <p th:text="${car.color}"></p>
-        <p th:text="${car.model}"></p>
-        <p th:text="${car.view}"></p>
+        <p><b>Модель: </b><span th:text="${car.model}"/></p>
+        <p><b>Год: </b><span th:text="${car.year}"/></p>
+        <p><b>Цвет: </b><span th:text="${car.color}"/></p>
+        <p><b>Цена: </b><span th:text="${car.price}"/></p>
+        <p><b>Просмотры: </b><span th:text="${car.view}"/></p>
         <a th:href="'/auto/' + ${car.id} + '/edit'" class="btn btn-warning">Редактировать</a>
-        <a th:href="'/auto/' + ${car.id} + '/delete'" class="btn btn-warning">Удалить</a>
+        <form th:action="@{'/auto/' + ${car.id} + '/remove'}" method="post">
+            <input type="hidden" name="_method" value="delete"/>
+            <button class="btn btn-danger mt-3" type="submit">Удалить</button>
+        </form>
     </div>
-    <footer th:include="footer :: footer"/>
+</div>
+<footer th:include="footer :: footer"/>
 </body>
 </html>
