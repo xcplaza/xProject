@@ -35,8 +35,7 @@ public class AutoController {
             @RequestParam String model,
             @RequestParam String year,
             @RequestParam String color,
-            @RequestParam String price,
-            Model models) {
+            @RequestParam String price) {
         Auto auto = new Auto(name, model, year, color, price);
         autoRepo.save(auto);
         return "redirect:/auto";
