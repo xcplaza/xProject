@@ -9,7 +9,13 @@
 <header th:include="nav :: header"/>
 <div class="container mt-5">
     <h1 th:text="${title}"></h1>
-</div>
-<footer th:include="footer :: footer"/>
+    <div th:each="car : ${autos}" class="alert alert-info mt-2">
+        <h3 th:text="${car.name}"></h3>
+        <p th:text="${car.price}"></p>
+        <p th:text="${car.year}"></p>
+        <a th:href="'/auto/' + ${car.id}">Подробнее</a>
+
+    </div>
+    <footer th:include="footer :: footer"/>
 </body>
 </html>
