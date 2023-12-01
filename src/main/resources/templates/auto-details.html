@@ -10,11 +10,15 @@
 <div class="container mt-5">
     <h1 th:text="Автомобили"/>
     <button type="button" class="btn btn-primary mt-2" onclick="window.location.href='/auto/add'">Добавить</button>
-    <div th:each="car : ${autos}" class="alert alert-info mt-2">
+    <div th:each="car : ${auto}" class="alert alert-info mt-2">
         <h3 th:text="${car.name}"></h3>
         <p th:text="${car.price}"></p>
         <p th:text="${car.year}"></p>
-        <a th:href="'/auto/' + ${car.id}" class="btn btn-warning">Подробнее</a>
+        <p th:text="${car.color}"></p>
+        <p th:text="${car.model}"></p>
+        <p th:text="${car.view}"></p>
+        <a th:href="'/auto/' + ${car.id} + '/edit'" class="btn btn-warning">Редактировать</a>
+        <a th:href="'/auto/' + ${car.id} + '/delete'" class="btn btn-warning">Удалить</a>
     </div>
     <footer th:include="footer :: footer"/>
 </body>

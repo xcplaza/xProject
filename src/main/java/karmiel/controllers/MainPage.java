@@ -18,10 +18,4 @@ public class MainPage {
         model.addAttribute("title", "О нас");
         return "about";
     }
-
-    @GetMapping("/auto")
-    public String auto(Model model) {
-        model.addAttribute("title", "Автомобили");
-        return "auto";
-    }
 }
