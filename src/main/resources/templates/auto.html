@@ -12,10 +12,11 @@
     <button type="button" class="btn btn-primary mt-2" onclick="window.location.href='/auto/add'">Добавить</button>
     <div th:each="car : ${autos}" class="alert alert-info mt-2">
         <h3 th:text="${car.name}"></h3>
-        <p th:text="${car.price}"></p>
-        <p th:text="${car.year}"></p>
+        <p><b>Модель: </b><span th:text="${car.model}"/></p>
+        <p><b>Год: </b><span th:text="${car.year}"/></p>
         <a th:href="'/auto/' + ${car.id}" class="btn btn-warning">Подробнее</a>
     </div>
-    <footer th:include="footer :: footer"/>
+</div>
+<footer th:include="footer :: footer"/>
 </body>
 </html>
