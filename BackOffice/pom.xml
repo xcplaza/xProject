@@ -3,20 +3,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.0</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <groupId>cars_project</groupId>
+        <artifactId>project</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <groupId>cars_project</groupId>
-    <artifactId>project</artifactId>
+    <groupId>karmiel</groupId>
+    <artifactId>BackOfffice</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>pom</packaging>
-    <modules>
-        <module>RandomAuto</module>
-        <module>BackOffice</module>
-        <module>BackOffice</module>
-    </modules>
     <properties>
         <java.version>17</java.version>
     </properties>
@@ -55,6 +48,12 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -73,5 +72,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
