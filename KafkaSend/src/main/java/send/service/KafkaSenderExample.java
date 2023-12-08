@@ -1,9 +1,9 @@
-package tech.razymov.alpha.service;
+package send.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
-import tech.razymov.alpha.dto.Message;
+import send.dto.Message;
 
 @Component
 public class KafkaSenderExample {

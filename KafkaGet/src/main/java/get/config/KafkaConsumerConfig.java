@@ -1,4 +1,4 @@
-package tech.razymov.omega.config;
+package get.config;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -11,7 +11,7 @@ import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
-import tech.razymov.omega.dto.Message;
+import get.dto.Message;
 
 import java.util.HashMap;
 import java.util.Map;
