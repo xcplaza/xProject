@@ -1,4 +1,4 @@
-package send.dto;
+package tech.razymov.alpha.dto;
 
 import lombok.Data;
 
