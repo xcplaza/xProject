@@ -16,6 +16,7 @@
         <module>RandomAuto</module>
         <module>BackOffice</module>
         <module>KafkaSend</module>
+        <module>KafkaGet</module>
         <module>CarPrepair</module>
     </modules>
     <properties>

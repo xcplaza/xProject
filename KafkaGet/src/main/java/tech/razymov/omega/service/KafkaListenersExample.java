@@ -1,8 +1,8 @@
-package send.service;
+package tech.razymov.omega.service;
 
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
-import send.dto.Message;
+import tech.razymov.omega.dto.Message;
 
 @Component
 class KafkaListenersExample {

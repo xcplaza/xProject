@@ -1,13 +1,13 @@
-package send;
+package tech.razymov.omega;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DemoApplication {
+public class KafkaGetApp {
 
     public static void main(String[] args) {
-        SpringApplication.run(DemoApplication.class, args);
+        SpringApplication.run(KafkaGetApp.class, args);
     }
 
 }
