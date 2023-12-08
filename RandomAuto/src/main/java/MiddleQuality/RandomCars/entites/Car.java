@@ -16,16 +16,17 @@ import lombok.Setter;
 @Setter
 public class Car {
 
-        @Id
+
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
         private int number;
+        @Id
         private String vin;
         private String brand;
         private String model;
         private boolean bumper;
         private boolean windscreen;
         private boolean clean;
-        private boolean repair;
+        private int state;
 
 }

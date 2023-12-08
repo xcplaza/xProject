@@ -28,4 +28,28 @@ public class RandomService {
     public boolean generateRandomBoolean() {
         return new Random().nextBoolean();
     }
+
+    public int generateRandomState() {
+        Random random = new Random();
+        return random.nextInt(100);
+    }
+    public  String[] generateRandomCarModel() {
+        String[] carBrands = {"BMW", "Mercedes", "Audi", "Lada", "Hyundai"};
+        String[][] carModels = {
+                {"X2", "X3", "X5", "X6"},
+                {"A-Class", "C-Class", "E-Class", "S-Class"},
+                {"A3", "A4", "A6", "Q5"},
+                {"Kalina", "XRay", "Niva"},
+                {"Accent", "i30", "i20"}
+        };
+
+        Random random = new Random();
+        int brandIndex = random.nextInt(carBrands.length);
+        int modelIndex = random.nextInt(carModels[brandIndex].length);
+
+        String selectedBrand = carBrands[brandIndex];
+        String selectedModel = carModels[brandIndex][modelIndex];
+
+        return new String[]{selectedBrand, selectedModel};
+    }
 }

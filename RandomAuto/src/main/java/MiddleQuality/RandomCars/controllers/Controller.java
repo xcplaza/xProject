@@ -29,16 +29,18 @@ public class Controller {
     public List<Car> generateRandomCars() {
         int numberOfCars = new Random().nextInt(16);
         List<Car> cars = new ArrayList<>();
+
         for (int i = 0; i < numberOfCars; i++) {
             Car car = new Car();
             car.setNumber(carService.generateRandomNumber());
             car.setVin(carService.generateRandomVin());
-            // car.setBrand(getBrandFromDatabase());
-            //car.setModel(getModelFromDatabase());
+            String[]carmodel = carService.generateRandomCarModel();
+             car.setBrand(carmodel[0]);
+             car.setModel(carmodel[1]);
             car.setBumper(carService.generateRandomBoolean());
             car.setWindscreen(carService.generateRandomBoolean());
             car.setClean(carService.generateRandomBoolean());
-            car.setRepair(carService.generateRandomBoolean());
+            car.setState(carService.generateRandomState());
             cars.add(carRepository.save(car));
         }
         return cars;
