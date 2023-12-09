@@ -1,4 +1,4 @@
-package karmiel;
+package karmiel.controller;
 
 
 import karmiel.producer.CarProducer;
