@@ -7,13 +7,10 @@ import send.dto.Message;
 
 @Component
 public class KafkaSenderExample {
-
     private final KafkaTemplate<String, Message> kafkaTemplate;
-
     @Autowired
     KafkaSenderExample(KafkaTemplate<String, Message> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
-
     }
 
     public void sendMessage(Message message, String topicName) {
