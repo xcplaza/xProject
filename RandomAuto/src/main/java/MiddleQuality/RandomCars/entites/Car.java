@@ -15,8 +15,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Car {
-
-
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
         private int number;
