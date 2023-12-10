@@ -1,4 +1,5 @@
 package karmiel.service;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import karmiel.dto.CarAprDTO;
 import karmiel.dto.CarDTO;
@@ -48,7 +49,11 @@ public class CarProcessingService {
                 carDTO.isBumper(),
                 carDTO.isWindscreen(),
                 carDTO.isClean(),
-                carDTO.getState()
+                carDTO.getState(),
+                carDTO.getColor(),
+                carDTO.getYears(),
+                carDTO.getMileage(),
+                carDTO.getPrice()
         );
     }
 
@@ -61,7 +66,11 @@ public class CarProcessingService {
                 carDTO.isBumper(),
                 carDTO.isWindscreen(),
                 carDTO.isClean(),
-                carDTO.getState()
+                carDTO.getState(),
+                carDTO.getColor(),
+                carDTO.getYears(),
+                carDTO.getMileage(),
+                carDTO.getPrice()
         );
     }
 }

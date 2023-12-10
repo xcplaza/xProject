@@ -11,11 +11,15 @@
     <h1>Редактирование автомобиля</h1>
     <div th:each="car : ${auto}" class="alert alert-info mt-2">
         <form method="POST">
-            <input type="text" name="name" th:value="${car.name}" placeholder="Марка" class="form-control mt-2"/>
-            <input type="text" name="model" th:value="${car.model}" placeholder="Модель" class="form-control mt-2"/>
-            <input type="text" name="year" th:value="${car.year}" placeholder="Год выпуска" class="form-control mt-2"/>
-            <input type="text" name="color" th:value="${car.color}" placeholder="Цвет" class="form-control mt-2"/>
-            <input type="text" name="price" th:value="${car.price}" placeholder="Цена покупки" class="form-control mt-2"/>
+            <span>Марка: <input type="text" name="name" th:value="${car.brand}" placeholder="Марка" class="form-control mt-2"/></span>
+            <span>Модель: <input type="text" name="model" th:value="${car.model}" placeholder="Модель" class="form-control mt-2"/></span>
+            <span>Год выпуска: <input type="text" name="year" th:value="${car.years}" placeholder="Год выпуска" class="form-control mt-2"/></span>
+            <span>Бампер: <input type="text" name="year" th:value="${car.bumper}" placeholder="Бампер" class="form-control mt-2"/></span>
+            <span>Стекла: <input type="text" name="year" th:value="${car.windscreen}" placeholder="Стекла" class="form-control mt-2"/></span>
+            <span>Химчистка:<input type="text" name="year" th:value="${car.clean}" placeholder="Химчистка" class="form-control mt-2"/></span>
+            <span>Цвет: <input type="text" name="color" th:value="${car.color}" placeholder="Цвет" class="form-control mt-2"/></span>
+            <span>VIN: <input type="text" name="name" th:value="${car.vin}" placeholder="VIN" class="form-control mt-2"/></span>
+            <span>Цена покупки: <input type="text" name="price" th:value="${car.price}" placeholder="Цена покупки" class="form-control mt-2"/></span>
             <button type="submit" class="btn btn-primary mt-2" th:text="|Обновить|"/>
         </form>
     </div>

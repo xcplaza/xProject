@@ -16,4 +16,8 @@ public class CarAprDTO {
         private boolean windscreen;
         private boolean clean;
         private int state;
+        private String color;
+        private int years;
+        private int mileage;
+        private int price;
 }
