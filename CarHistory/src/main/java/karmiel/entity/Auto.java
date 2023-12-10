@@ -1,9 +1,6 @@
 package karmiel.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -11,12 +8,21 @@ import lombok.Data;
 public class Auto {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    private String name;
+    private long id;
+//    @Column(name = "number", nullable = false, columnDefinition = "INT DEFAULT 0")
+    private int number;
+    private String vin;
+    private String brand;
     private String model;
-    private String year;
+    private boolean bumper;
+    private boolean windscreen;
+    private boolean clean;
+    private int state;
     private String color;
-    private String price;
+    private int years;
+    private int mileage;
+    private int price;
+    @Column(name = "view", nullable = false, columnDefinition = "INT DEFAULT 0")
     private int view;
 }
 

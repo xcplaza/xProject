@@ -31,12 +31,19 @@ public class AutoController {
 
     @PostMapping("/auto/add")
     public String addAuto(
-            @RequestParam String name,
+            @RequestParam int number,
+            @RequestParam String vin,
+            @RequestParam String brand,
             @RequestParam String model,
-            @RequestParam String year,
+            @RequestParam boolean bumper,
+            @RequestParam boolean windscreen,
+            @RequestParam boolean clean,
+            @RequestParam int state,
             @RequestParam String color,
-            @RequestParam String price) {
-        Auto auto = new Auto(name, model, year, color, price);
+            @RequestParam int years,
+            @RequestParam int mileage,
+            @RequestParam int price) {
+        Auto auto = new Auto(number, vin,brand, model, bumper, windscreen, clean, state, color, years, mileage, price);
         autoRepo.save(auto);
         return "redirect:/auto";
     }
@@ -67,20 +74,21 @@ public class AutoController {
 
     @PostMapping("/auto/{id}/edit")
     public String autoUpdate(@PathVariable(value = "id") long id,
-                             @RequestParam String name,
+                             @RequestParam String brand,
                              @RequestParam String model,
                              @RequestParam String year,
                              @RequestParam String color,
                              @RequestParam String price) {
         Auto auto = autoRepo.findById(id).orElseThrow();
-        auto.setName(name);
+        auto.setBrand(brand);
         auto.setModel(model);
-        auto.setYear(year);
+        auto.setYears(Integer.parseInt(year));
         auto.setColor(color);
-        auto.setPrice(price);
+        auto.setPrice(Integer.parseInt(price));
         autoRepo.save(auto);
         return "redirect:/auto";
     }
+
     @RequestMapping(value = "/auto/{id}/remove", method = RequestMethod.POST)
     public String autoDelete(@PathVariable(value = "id") long id) {
         Auto auto = autoRepo.findById(id).orElseThrow();

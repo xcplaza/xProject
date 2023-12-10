@@ -35,6 +35,7 @@ public class CarProducer {
             int year = generateRandomYear();
             int mileage = generateRandomMileage();
             int state = calculateState(year, mileage);
+            int price = generateRandomPrice(year, mileage, state);
 
             CarDTO carDTO = new CarDTO(
                     carGenerator.generateRandomNumber(),
@@ -47,7 +48,8 @@ public class CarProducer {
                     state,
                     generateRandomColor(), // Color
                     year,
-                    mileage
+                    mileage,
+                    price
             );
             sendToKafka(carDTO);
         }
@@ -82,6 +84,18 @@ public class CarProducer {
         String[] colors = {"Red", "Blue", "Green", "White", "Black", "Silver", "Yellow", "Orange", "Purple"};
         int randomIndex = (int) (Math.random() * colors.length);
         return colors[randomIndex];
+    }
+
+    private int generateRandomPrice(int year, int mileage, int state) {
+        // Логика генерации цены в зависимости от года, пробега и состояния авто
+        // Пример простой логики: чем старше год, больше пробег и ниже состояние - тем дешевле
+        int basePrice = 10000; // Минимальная цена
+
+        int ageBonus = Math.max(0, year - 2000); // бонус за возраст (год выпуска после 2000)
+        int mileageBonus = Math.max(0, 300000 - mileage) / 10000; // бонус за пробег (максимум 30,000 км)
+        int statePenalty = Math.max(0, 100 - state); // баллы за состояние
+
+        return basePrice + ageBonus + mileageBonus - statePenalty;
     }
 
     private void sendToKafka(CarDTO carDTO) {

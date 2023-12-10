@@ -20,8 +20,9 @@ public class CarDTO {
     private String color;
     private int years;
     private int mileage;
+    private int price;
 
-    public CarDTO(final int number, final String vin, final String brand, final String model, final boolean bumper, final boolean windscreen, final boolean clean, final int state, String color, int years, int mileage) {
+    public CarDTO(final int number, final String vin, final String brand, final String model, final boolean bumper, final boolean windscreen, final boolean clean, final int state, String color, int years, int mileage, int price) {
         this.number = number;
         this.vin = vin;
         this.brand = brand;
@@ -33,5 +34,6 @@ public class CarDTO {
         this.color = color;
         this.years = years;
         this.mileage = mileage;
+        this.price = price;
     }
 }

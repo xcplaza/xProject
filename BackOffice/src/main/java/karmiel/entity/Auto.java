@@ -1,6 +1,7 @@
 package karmiel.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,22 +11,36 @@ import java.util.*;
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Auto {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    private String name;
+    private long id;
+    private int number;
+    private String vin;
+    private String brand;
     private String model;
-    private String year;
+    private boolean bumper;
+    private boolean windscreen;
+    private boolean clean;
+    private int state;
     private String color;
-    private String price;
-    private int view;
+    private int years;
+    private int mileage;
+    private int price;
 
-    public Auto(final String name, final String model, final String year, final String color, final String price) {
-        this.name = name;
+    public Auto(final int number, final String vin, final String brand, final String model, final boolean bumper, final boolean windscreen, final boolean clean, final int state, final String color, final int years, final int mileage, final int price) {
+        this.number = number;
+        this.vin = vin;
+        this.brand = brand;
         this.model = model;
-        this.year = year;
+        this.bumper = bumper;
+        this.windscreen = windscreen;
+        this.clean = clean;
+        this.state = state;
         this.color = color;
+        this.years = years;
+        this.mileage = mileage;
         this.price = price;
     }
 }
