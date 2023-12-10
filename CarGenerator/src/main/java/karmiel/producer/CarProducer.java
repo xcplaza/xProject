@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.Properties;
 @Component
 public class CarProducer {
@@ -38,11 +39,26 @@ public class CarProducer {
                     Math.random() < 0.5, // Bumper
                     Math.random() < 0.5, // Windscreen
                     Math.random() < 0.5, // Clean
-                    (int) (Math.random() * 61) + 40 // State (от 40 до 100)
+                    (int) (Math.random() * 61) + 40, // State (от 40 до 100)
+                    generateRandomColor(), // Color
+                    generateRandomYear() // Year
             );
             sendToKafka(carDTO);
         }
     }
+
+    // Добавленные методы для генерации случайного цвета и года
+    private String generateRandomColor() {
+        String[] colors = {"Red", "Blue", "Green", "White", "Black", "Silver", "Yellow", "Orange", "Purple"};
+        int randomIndex = (int) (Math.random() * colors.length);
+        return colors[randomIndex];
+    }
+
+    private int generateRandomYear() {
+        int currentYear = LocalDate.now().getYear();
+        return (int) (Math.random() * 20) + currentYear - 10; // Генерация года от текущего года - 10 до текущего года + 10
+    }
+
 
     private void sendToKafka(CarDTO carDTO) {
         Properties properties = new Properties();
