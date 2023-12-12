@@ -30,7 +30,7 @@ public class CarPrepairTest {
         carAprDTO.setWindscreen(true);
         carAprDTO.setClean(true);
         carAprDTO.setState(48);
-        carAprDTO.setArpooved(true);
+//        carAprDTO.setArpooved(true);
 
 
     }

@@ -21,6 +21,7 @@
         <module>CarGenerator</module>
         <module>CarApprove</module>
         <module>CarHistory</module>
+        <module>CarParts</module>
     </modules>
     <properties>
         <java.version>17</java.version>

@@ -14,6 +14,7 @@ import java.util.List;
 
 public class CarPrepairDto {
     @Id
+    private int number;
     private String vin;
     private String brand;
     private String model;
@@ -21,6 +22,9 @@ public class CarPrepairDto {
     private boolean windscreen;
     private boolean clean;
     private int state;
-    private boolean arpooved;
+    private String color;
+    private int years;
+    private int mileage;
+    private int price;
     List<CarParts> carPartsList;
 }
