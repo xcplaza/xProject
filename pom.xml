@@ -6,7 +6,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.2.0</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/> <!-- lookup parent from repo -->
     </parent>
     <groupId>cars_project</groupId>
     <artifactId>project</artifactId>
@@ -16,12 +16,11 @@
         <module>RandomAuto</module>
         <module>BackOffice</module>
         <module>CarPrepair</module>
-        <module>KafkaSend</module>
-        <module>KafkaGet</module>
         <module>CarGenerator</module>
         <module>CarApprove</module>
         <module>CarHistory</module>
         <module>CarParts</module>
+        <module>CarInfo</module>
     </modules>
     <properties>
         <java.version>17</java.version>
