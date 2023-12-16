@@ -18,7 +18,7 @@ public class CarProducer {
     private static final String KAFKA_BOOTSTRAP_SERVERS = "localhost:9092";
     private static final String TOPIC_NAME = "car_dto_topic";
 
-    public void generateAndSendCar() {
+    public void generateAndSendCar() throws SQLException {
         RandomCarGenerator carGenerator = new RandomCarGenerator();
         DatabaseAccessor databaseAccessor = new DatabaseAccessor();
 
@@ -29,6 +29,7 @@ public class CarProducer {
             model = databaseAccessor.getModelFromDatabase();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw e; // Прокидываем исключение выше
         }
 
         if (brand != null && model != null) {
@@ -55,17 +56,18 @@ public class CarProducer {
         }
     }
 
-    private int generateRandomYear() {
+
+    public int generateRandomYear() {
         int currentYear = LocalDate.now().getYear();
         int startYear = 1950;
         return (int) (Math.random() * (currentYear - startYear + 1)) + startYear;
     }
 
-    private int generateRandomMileage() {
+    public int generateRandomMileage() {
         return (int) (Math.random() * 300001); // Генерация пробега от 0 до 300,000 км
     }
 
-    private int calculateState(int year, int mileage) {
+    public int calculateState(int year, int mileage) {
         // Логика расчета состояния в зависимости от года выпуска и пробега
         int baseState = 100; // Максимальное состояние
 
@@ -80,13 +82,13 @@ public class CarProducer {
         return baseState - agePenalty - mileagePenalty;
     }
 
-    private String generateRandomColor() {
+    public String generateRandomColor() {
         String[] colors = {"Red", "Blue", "Green", "White", "Black", "Silver", "Yellow", "Orange", "Purple"};
         int randomIndex = (int) (Math.random() * colors.length);
         return colors[randomIndex];
     }
 
-    private int generateRandomPrice(int year, int mileage, int state) {
+    public int generateRandomPrice(int year, int mileage, int state) {
         // Логика генерации цены в зависимости от года, пробега и состояния авто
         // Пример простой логики: чем старше год, больше пробег и ниже состояние - тем дешевле
         int basePrice = 10000; // Минимальная цена

@@ -1,7 +1,7 @@
 package karmiel.service;
 
 import karmiel.entity.OrderEntity;
-import karmiel.repo.OrderRepository;
+import karmiel.repo.OrderRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,15 +12,13 @@ import java.util.Optional;
 public class OrderService {
 
     @Autowired
-    private OrderRepository orderRepository;
+    private OrderRepo orderRepo;
 
     public List<OrderEntity> getAllOrders() {
-        return orderRepository.findAll();
+        return orderRepo.findAll();
     }
 
     public Optional<OrderEntity> getOrderById(Long id) {
-        return orderRepository.findById(id);
+        return orderRepo.findById(id);
     }
-
-    // Другие методы, если необходимо
 }
