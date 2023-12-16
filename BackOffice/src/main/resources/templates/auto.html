@@ -7,15 +7,28 @@
 </head>
 <body>
 <header th:include="nav :: header"/>
-<div class="container mt-5">
-    <h1 th:text="Автомобили"/>
-    <button type="button" class="btn btn-primary mt-2" onclick="window.location.href='/auto/add'">Добавить</button>
-    <div th:each="car : ${autos}" class="alert alert-info mt-2">
-        <h3 th:text="${car.brand}"></h3>
-        <p><b>Модель: </b><span th:text="${car.model}"/></p>
-        <p><b>Год: </b><span th:text="${car.years}"/></p>
-        <p><b>Состояние: </b><span th:text="${car.state}"/></p>
-        <a th:href="'/auto/' + ${car.id}" class="btn btn-warning">Подробнее</a>
+<div class="album py-5 bg-body-tertiary">
+    <div class="container">
+        <h1 th:text="Автомобили"/>
+        <button type="button" class="btn btn-primary mt-2" onclick="window.location.href='/auto/add'">Добавить</button>
+        <p>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            <div th:each="car : ${autos}" class="col">
+                <div class="card shadow-sm alert alert-info mt-2">
+                    <div class="card-body">
+                        <h3 th:text="${car.brand}"></h3>
+                        <p><b>Модель: </b><span th:text="${car.model}"/></p>
+                        <p><b>Год: </b><span th:text="${car.years}"/></p>
+                        <p><b>Состояние: </b><span th:text="${car.state}"/></p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <a th:href="'/auto/' + ${car.id}" class="btn btn-warning">Подробнее</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <footer th:include="footer :: footer"/>
