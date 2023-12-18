@@ -3,6 +3,7 @@ package karmiel.controllers;
 import karmiel.entity.Auto;
 import karmiel.repo.AutoRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class AutoController {
 
     @GetMapping("/auto")
     public String auto(Model model) {
-        Iterable<Auto> autos = autoRepo.findAll();
+        Iterable<Auto> autos = autoRepo.findAll(Sort.by(Sort.Direction.DESC, "id"));
         model.addAttribute("autos", autos);
         return "auto";
     }
