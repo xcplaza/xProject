@@ -2,8 +2,8 @@ package cars_project.service;
 
 
 import cars_project.dto.CarAprDTO;
-import cars_project.dto.CarParts;
-import cars_project.dto.CarPrepairDto;
+import cars_project.dto.CarNotReadyDto;
+import cars_project.dto.CarReadyDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -16,54 +16,84 @@ import java.util.List;
 public class CarPrepairService {
 
     @Autowired
-    private KafkaTemplate<String, CarPrepairDto> kafkaTemplate;
+    private KafkaTemplate<String, Object> kafkaTemplate;
+
     @KafkaListener(topics = "car_approve_dto_topic", groupId = "myGroup")
     public void consumeCarAprDTO(CarAprDTO carAprDTO) {
         processCarAprDTO(carAprDTO);
     }
 
     public void processCarAprDTO(CarAprDTO carAprDTO) {
-        CarPrepairDto carPrepairDto = createCarPrepairDto(carAprDTO);
+        if (!carPartsList.isEmpty()) {
+            CarNotReadyDto CarNotReadyDto = createCarNotReadyDto(carAprDTO);
+            kafkaTemplate.send("car_dto_not_ready", CarNotReadyDto);
+        }else {
+            CarReadyDto carReadyDto=createCarReadyDto(carAprDTO);
+            kafkaTemplate.send("car_dto_redy", carReadyDto);
 
-        kafkaTemplate.send("car_dto_ready", carPrepairDto);
+        }
+
+
     }
+    List<String> carPartsList = new ArrayList<>();
 
 
-    private CarPrepairDto createCarPrepairDto(CarAprDTO carAprDTO) {
-        CarPrepairDto carPrepairDto = new CarPrepairDto();
-        carPrepairDto.setNumber(carAprDTO.getNumber());
-        carPrepairDto.setVin(carAprDTO.getVin());
-        carPrepairDto.setBrand(carAprDTO.getBrand());
-        carPrepairDto.setModel(carAprDTO.getModel());
-        carPrepairDto.setBumper(carAprDTO.isBumper());
-        carPrepairDto.setWindscreen(carAprDTO.isWindscreen());
-        carPrepairDto.setClean(carAprDTO.isClean());
-        carPrepairDto.setState(carAprDTO.getState());
-        carPrepairDto.setColor(carAprDTO.getColor());
-        carPrepairDto.setYears(carAprDTO.getYears());
-        carPrepairDto.setMileage(carAprDTO.getMileage());
-        carPrepairDto.setPrice(carAprDTO.getPrice());
-
-        carPrepairDto.setCarPartsList(createCarPartsList(carAprDTO));
-
-        return carPrepairDto;
-    }
-
-    private List<CarParts> createCarPartsList(CarAprDTO carAprDTO) {
-        List<CarParts> carPartsList = new ArrayList<>();
+    private  List<String> createCarPartsList(CarAprDTO carAprDTO) {
 
         if (!carAprDTO.isBumper()) {
-            carPartsList.add(new CarParts("bumper"));
+            carPartsList.add("bumper");
         }
         if (!carAprDTO.isWindscreen()) {
-            carPartsList.add(new CarParts("windscreen"));
+            carPartsList.add("windscreen");
         }
         if (!carAprDTO.isClean()) {
-            carPartsList.add(new CarParts("clean"));
+            carPartsList.add("clean");
         }
 
 
         return carPartsList;
     }
+
+
+    private CarNotReadyDto createCarNotReadyDto(CarAprDTO carAprDTO) {
+        CarNotReadyDto carNotReadyDto = new CarNotReadyDto();
+        carNotReadyDto.setNumber(carAprDTO.getNumber());
+        carNotReadyDto.setVin(carAprDTO.getVin());
+        carNotReadyDto.setBrand(carAprDTO.getBrand());
+        carNotReadyDto.setModel(carAprDTO.getModel());
+        carNotReadyDto.setBumper(carAprDTO.isBumper());
+        carNotReadyDto.setWindscreen(carAprDTO.isWindscreen());
+        carNotReadyDto.setClean(carAprDTO.isClean());
+        carNotReadyDto.setState(carAprDTO.getState());
+        carNotReadyDto.setColor(carAprDTO.getColor());
+        carNotReadyDto.setYears(carAprDTO.getYears());
+        carNotReadyDto.setMileage(carAprDTO.getMileage());
+        carNotReadyDto.setPrice(carAprDTO.getPrice());
+
+        carNotReadyDto.setCarPartsList(createCarPartsList(carAprDTO));
+
+        return carNotReadyDto;
+    }
+    private CarReadyDto createCarReadyDto(CarAprDTO carAprDTO) {
+        CarReadyDto carReadyDto = new CarReadyDto();
+        carReadyDto.setNumber(carAprDTO.getNumber());
+        carReadyDto.setVin(carAprDTO.getVin());
+        carReadyDto.setBrand(carAprDTO.getBrand());
+        carReadyDto.setModel(carAprDTO.getModel());
+        carReadyDto.setBumper(carAprDTO.isBumper());
+        carReadyDto.setWindscreen(carAprDTO.isWindscreen());
+        carReadyDto.setClean(carAprDTO.isClean());
+        carReadyDto.setState(carAprDTO.getState());
+        carReadyDto.setColor(carAprDTO.getColor());
+        carReadyDto.setYears(carAprDTO.getYears());
+        carReadyDto.setMileage(carAprDTO.getMileage());
+        carReadyDto.setPrice(carAprDTO.getPrice());
+
+
+
+        return carReadyDto;
+    }
+
+
 }
 

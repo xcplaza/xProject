@@ -9,8 +9,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-
-public class CarPrepairDto {
+public class CarNotReadyDto {
     @Id
     private int number;
     private String vin;
@@ -24,5 +23,5 @@ public class CarPrepairDto {
     private int years;
     private int mileage;
     private int price;
-    List<CarParts> carPartsList;
+    List<String> carPartsList;
 }
