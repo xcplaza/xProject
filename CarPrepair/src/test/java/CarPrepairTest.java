@@ -1,38 +1,56 @@
-import cars_project.dto.CarAprDTO;
-import cars_project.dto.CarPrepairDto;
-import cars_project.service.CarPrepairService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.kafka.core.KafkaTemplate;
-
-import static org.mockito.Mockito.verify;
-
-@SpringBootTest
-@AutoConfigureMockMvc
-public class CarPrepairTest {
-    @MockBean
-    private KafkaTemplate<String, CarPrepairDto> kafkaTemplate;
-    @Autowired
-    private CarPrepairService carPrepairService;
-
-
-    @Test
-    void CarPrepairServiceTest(){
-        CarAprDTO carAprDTO = new CarAprDTO();
-        carAprDTO.setVin("B25F6VD8AD81Z9WY2");
-        carAprDTO.setBrand("Lada");
-        carAprDTO.setModel("Niva");
-        carAprDTO.setBumper(false);
-        carAprDTO.setWindscreen(true);
-        carAprDTO.setClean(true);
-        carAprDTO.setState(48);
-//        carAprDTO.setArpooved(true);
-
-
-    }
-
-}
+//import cars_project.Main;
+//import cars_project.dto.CarAprDTO;
+//import cars_project.kafkaconfig.KafkaProdConfig;
+//import cars_project.service.CarPrepairService;
+//import org.junit.jupiter.api.Test;
+//import org.mockito.InjectMocks;
+//import org.mockito.Mockito;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.boot.test.context.SpringBootTest;
+//import org.springframework.kafka.core.KafkaTemplate;
+//import org.springframework.kafka.test.context.EmbeddedKafka;
+//
+//import static org.mockito.ArgumentMatchers.any;
+//
+//@SpringBootTest(classes = TestKafkaConfig.class)
+//@EmbeddedKafka(partitions = 1, topics = {"car-apr-topic"})
+//class CarServiceTest {
+//
+//    @Autowired
+//    private KafkaTemplate<String, CarAprDTO> kafkaTemplate;
+//
+//    @Autowired
+//    @InjectMocks
+//    private CarPrepairService carService;
+//
+//    @Test
+//    void testConsumeCarAprDTO() throws InterruptedException {
+//        // Создаем тестовый объект CarAprDTO
+//        CarAprDTO carAprDTO = createSampleCarAprDTO();
+//
+//        Mockito.when(kafkaTemplate.send(any(), any())).thenReturn(null);
+//
+//        carService.processCarAprDTO(carAprDTO);
+//
+//        Thread.sleep(1000);
+//
+//        Mockito.verify(kafkaTemplate, Mockito.times(1)).send(any(), any());
+//    }
+//
+//    private CarAprDTO createSampleCarAprDTO() {
+//        CarAprDTO carAprDTO = new CarAprDTO();
+//        carAprDTO.setNumber(1);
+//        carAprDTO.setVin("123456");
+//        carAprDTO.setBrand("Toyota");
+//        carAprDTO.setModel("Camry");
+//        carAprDTO.setBumper(false);
+//        carAprDTO.setWindscreen(true);
+//        carAprDTO.setClean(false);
+//        carAprDTO.setState(1);
+//        carAprDTO.setColor("Red");
+//        carAprDTO.setYears(2020);
+//        carAprDTO.setMileage(50000);
+//        carAprDTO.setPrice(25000);
+//        return carAprDTO;
+//    }
+//}
