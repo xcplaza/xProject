@@ -14,7 +14,7 @@
         <p>
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
             <div th:each="car : ${autos}" class="col">
-                <div class="card shadow-sm alert alert-info mt-2">
+                <div th:classappend="${car.state lt 50} ? 'card shadow-sm alert alert-danger mt-2' : (${car.state gt 70} ? 'card shadow-sm alert alert-success mt-2' : 'card shadow-sm alert alert-info mt-2')">
                     <div class="card-body">
                         <h3 th:text="${car.brand}"></h3>
                         <p><b>Модель: </b><span th:text="${car.model}"/></p>
