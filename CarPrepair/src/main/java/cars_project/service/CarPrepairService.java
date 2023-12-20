@@ -1,9 +1,9 @@
 package cars_project.service;
 
-
 import cars_project.dto.CarAprDTO;
 import cars_project.dto.CarParts;
 import cars_project.dto.CarPrepairDto;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -16,16 +16,24 @@ import java.util.List;
 @Service
 public class CarPrepairService {
 
-    private final KafkaTemplate<String, CarPrepairDto> kafkaTemplate;
+    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final ObjectMapper objectMapper;
 
     @Autowired
-    public CarPrepairService(KafkaTemplate<String, CarPrepairDto> kafkaTemplate) {
+    public CarPrepairService(KafkaTemplate<String, String> kafkaTemplate, ObjectMapper objectMapper) {
         this.kafkaTemplate = kafkaTemplate;
+        this.objectMapper = objectMapper;
     }
 
     @KafkaListener(topics = "car_approve_dto_topic", groupId = "myGroup")
-    public void processCarAprDTO(ConsumerRecord<String, CarAprDTO> record) {
-        CarAprDTO carAprDTO = record.value();
+    public void processCarAprDTO(ConsumerRecord<String, String> record) {
+        // Десериализация объекта CarAprDTO из строки
+        CarAprDTO carAprDTO;
+        try {
+            carAprDTO = objectMapper.readValue(record.value(), CarAprDTO.class);
+        } catch (Exception e) {
+            throw new RuntimeException("Error deserializing CarAprDTO", e);
+        }
 
         List<CarParts> carParts = new ArrayList<>();
         if (!carAprDTO.isBumper()) {
@@ -35,7 +43,6 @@ public class CarPrepairService {
             carParts.add(new CarParts("Windscreen"));
         }
 
-        // Формирование нового CarPrepairDTO
         CarPrepairDto carPrepairDTO = new CarPrepairDto();
         carPrepairDTO.setNumber(carAprDTO.getNumber());
         carPrepairDTO.setVin(carAprDTO.getVin());
@@ -49,11 +56,16 @@ public class CarPrepairService {
         carPrepairDTO.setYears(carAprDTO.getYears());
         carPrepairDTO.setMileage(carPrepairDTO.getMileage());
         carPrepairDTO.setPrice(carPrepairDTO.getPrice());
-//            carPrepairDTO.setArpooved(carAprDTO.isArpooved());
         carPrepairDTO.setCarPartsList(carParts);
 
-        kafkaTemplate.send("car_dto_ready", carPrepairDTO);
+        try {
+            // Преобразование объекта CarPrepairDto в JSON-строку
+            String carPrepairJson = objectMapper.writeValueAsString(carPrepairDTO);
+
+            // Отправка в Kafka
+            kafkaTemplate.send("car_dto_ready", carPrepairJson);
+        } catch (Exception e) {
+            throw new RuntimeException("Error serializing CarPrepairDto", e);
+        }
     }
 }
-
-
