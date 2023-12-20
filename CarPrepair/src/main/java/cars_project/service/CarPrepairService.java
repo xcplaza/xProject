@@ -24,12 +24,13 @@ public class CarPrepairService {
     }
 
     public void processCarAprDTO(CarAprDTO carAprDTO) {
-        if (!carPartsList.isEmpty()) {
-            CarNotReadyDto CarNotReadyDto = createCarNotReadyDto(carAprDTO);
+        CarNotReadyDto CarNotReadyDto = createCarNotReadyDto(carAprDTO);
+        if (!(carPartsList.isEmpty())) {
+
             kafkaTemplate.send("car_dto_not_ready", CarNotReadyDto);
         }else {
             CarReadyDto carReadyDto=createCarReadyDto(carAprDTO);
-            kafkaTemplate.send("car_dto_redy", carReadyDto);
+            kafkaTemplate.send("car_dto_ready", carReadyDto);
 
         }
 
