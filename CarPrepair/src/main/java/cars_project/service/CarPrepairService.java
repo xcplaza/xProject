@@ -25,7 +25,7 @@ public class CarPrepairService {
 
     public void processCarAprDTO(CarAprDTO carAprDTO) {
         CarNotReadyDto CarNotReadyDto = createCarNotReadyDto(carAprDTO);
-        if (!(carPartsList.isEmpty())) {
+        if (!carAprDTO.isBumper()|| !carAprDTO.isClean()||!carAprDTO.isWindscreen()){
 
             kafkaTemplate.send("car_dto_not_ready", CarNotReadyDto);
         }else {
@@ -36,10 +36,11 @@ public class CarPrepairService {
 
 
     }
-    List<String> carPartsList = new ArrayList<>();
 
 
     private  List<String> createCarPartsList(CarAprDTO carAprDTO) {
+        List<String> carPartsList = new ArrayList<>();
+
 
         if (!carAprDTO.isBumper()) {
             carPartsList.add("bumper");
