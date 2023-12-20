@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
+@Service//version 1/4/
 public class CarPrepairService {
 
     @Autowired
@@ -24,8 +24,8 @@ public class CarPrepairService {
     }
 
     public void processCarAprDTO(CarAprDTO carAprDTO) {
-        CarNotReadyDto CarNotReadyDto = createCarNotReadyDto(carAprDTO);
-        if (!(carPartsList.isEmpty())) {
+        if (!carAprDTO.isBumper()|| !carAprDTO.isClean()||!carAprDTO.isWindscreen()){
+            CarNotReadyDto CarNotReadyDto = createCarNotReadyDto(carAprDTO);
 
             kafkaTemplate.send("car_dto_not_ready", CarNotReadyDto);
         }else {
@@ -36,10 +36,11 @@ public class CarPrepairService {
 
 
     }
-    List<String> carPartsList = new ArrayList<>();
 
 
     private  List<String> createCarPartsList(CarAprDTO carAprDTO) {
+        List<String> carPartsList = new ArrayList<>();
+
 
         if (!carAprDTO.isBumper()) {
             carPartsList.add("bumper");
