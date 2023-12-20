@@ -24,8 +24,8 @@ public class CarPrepairService {
     }
 
     public void processCarAprDTO(CarAprDTO carAprDTO) {
-        CarNotReadyDto CarNotReadyDto = createCarNotReadyDto(carAprDTO);
         if (!carAprDTO.isBumper()|| !carAprDTO.isClean()||!carAprDTO.isWindscreen()){
+            CarNotReadyDto CarNotReadyDto = createCarNotReadyDto(carAprDTO);
 
             kafkaTemplate.send("car_dto_not_ready", CarNotReadyDto);
         }else {
