@@ -1,9 +1,10 @@
 package cars_project.service;
 
-
 import cars_project.dto.CarAprDTO;
-import cars_project.dto.CarNotReadyDto;
-import cars_project.dto.CarReadyDto;
+import cars_project.dto.CarParts;
+import cars_project.dto.CarPrepairDto;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -12,90 +13,59 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service//version 1/4/
+@Service
 public class CarPrepairService {
 
+    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final ObjectMapper objectMapper;
+
     @Autowired
-    private KafkaTemplate<String, Object> kafkaTemplate;
+    public CarPrepairService(KafkaTemplate<String, String> kafkaTemplate, ObjectMapper objectMapper) {
+        this.kafkaTemplate = kafkaTemplate;
+        this.objectMapper = objectMapper;
+    }
 
     @KafkaListener(topics = "car_approve_dto_topic", groupId = "myGroup")
-    public void consumeCarAprDTO(CarAprDTO carAprDTO) {
-        processCarAprDTO(carAprDTO);
-    }
-
-    public void processCarAprDTO(CarAprDTO carAprDTO) {
-        if (!carAprDTO.isBumper()|| !carAprDTO.isClean()||!carAprDTO.isWindscreen()){
-            CarNotReadyDto CarNotReadyDto = createCarNotReadyDto(carAprDTO);
-
-            kafkaTemplate.send("car_dto_not_ready", CarNotReadyDto);
-        }else {
-            CarReadyDto carReadyDto=createCarReadyDto(carAprDTO);
-            kafkaTemplate.send("car_dto_ready", carReadyDto);
-
+    public void processCarAprDTO(ConsumerRecord<String, String> record) {
+        // Десериализация объекта CarAprDTO из строки
+        CarAprDTO carAprDTO;
+        try {
+            carAprDTO = objectMapper.readValue(record.value(), CarAprDTO.class);
+        } catch (Exception e) {
+            throw new RuntimeException("Error deserializing CarAprDTO", e);
         }
 
-
-    }
-
-
-    private  List<String> createCarPartsList(CarAprDTO carAprDTO) {
-        List<String> carPartsList = new ArrayList<>();
-
-
+        List<CarParts> carParts = new ArrayList<>();
         if (!carAprDTO.isBumper()) {
-            carPartsList.add("bumper");
+            carParts.add(new CarParts("Bumper"));
         }
         if (!carAprDTO.isWindscreen()) {
-            carPartsList.add("windscreen");
-        }
-        if (!carAprDTO.isClean()) {
-            carPartsList.add("clean");
+            carParts.add(new CarParts("Windscreen"));
         }
 
+        CarPrepairDto carPrepairDTO = new CarPrepairDto();
+        carPrepairDTO.setNumber(carAprDTO.getNumber());
+        carPrepairDTO.setVin(carAprDTO.getVin());
+        carPrepairDTO.setBrand(carAprDTO.getBrand());
+        carPrepairDTO.setModel(carAprDTO.getModel());
+        carPrepairDTO.setBumper(carAprDTO.isBumper());
+        carPrepairDTO.setWindscreen(carAprDTO.isWindscreen());
+        carPrepairDTO.setClean(carAprDTO.isClean());
+        carPrepairDTO.setState(carAprDTO.getState());
+        carPrepairDTO.setColor(carPrepairDTO.getColor());
+        carPrepairDTO.setYears(carAprDTO.getYears());
+        carPrepairDTO.setMileage(carPrepairDTO.getMileage());
+        carPrepairDTO.setPrice(carPrepairDTO.getPrice());
+        carPrepairDTO.setCarPartsList(carParts);
 
-        return carPartsList;
+        try {
+            // Преобразование объекта CarPrepairDto в JSON-строку
+            String carPrepairJson = objectMapper.writeValueAsString(carPrepairDTO);
+
+            // Отправка в Kafka
+            kafkaTemplate.send("car_dto_ready", carPrepairJson);
+        } catch (Exception e) {
+            throw new RuntimeException("Error serializing CarPrepairDto", e);
+        }
     }
-
-
-    private CarNotReadyDto createCarNotReadyDto(CarAprDTO carAprDTO) {
-        CarNotReadyDto carNotReadyDto = new CarNotReadyDto();
-        carNotReadyDto.setNumber(carAprDTO.getNumber());
-        carNotReadyDto.setVin(carAprDTO.getVin());
-        carNotReadyDto.setBrand(carAprDTO.getBrand());
-        carNotReadyDto.setModel(carAprDTO.getModel());
-        carNotReadyDto.setBumper(carAprDTO.isBumper());
-        carNotReadyDto.setWindscreen(carAprDTO.isWindscreen());
-        carNotReadyDto.setClean(carAprDTO.isClean());
-        carNotReadyDto.setState(carAprDTO.getState());
-        carNotReadyDto.setColor(carAprDTO.getColor());
-        carNotReadyDto.setYears(carAprDTO.getYears());
-        carNotReadyDto.setMileage(carAprDTO.getMileage());
-        carNotReadyDto.setPrice(carAprDTO.getPrice());
-
-        carNotReadyDto.setCarPartsList(createCarPartsList(carAprDTO));
-
-        return carNotReadyDto;
-    }
-    private CarReadyDto createCarReadyDto(CarAprDTO carAprDTO) {
-        CarReadyDto carReadyDto = new CarReadyDto();
-        carReadyDto.setNumber(carAprDTO.getNumber());
-        carReadyDto.setVin(carAprDTO.getVin());
-        carReadyDto.setBrand(carAprDTO.getBrand());
-        carReadyDto.setModel(carAprDTO.getModel());
-        carReadyDto.setBumper(carAprDTO.isBumper());
-        carReadyDto.setWindscreen(carAprDTO.isWindscreen());
-        carReadyDto.setClean(carAprDTO.isClean());
-        carReadyDto.setState(carAprDTO.getState());
-        carReadyDto.setColor(carAprDTO.getColor());
-        carReadyDto.setYears(carAprDTO.getYears());
-        carReadyDto.setMileage(carAprDTO.getMileage());
-        carReadyDto.setPrice(carAprDTO.getPrice());
-
-
-
-        return carReadyDto;
-    }
-
-
 }
-
