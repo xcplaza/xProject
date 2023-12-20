@@ -21,6 +21,8 @@
         <module>CarHistory</module>
         <module>CarParts</module>
         <module>CarInfo</module>
+        <module>CarRepair</module>
+        <module>CarSale</module>
     </modules>
     <properties>
         <java.version>17</java.version>
