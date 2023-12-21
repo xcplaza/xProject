@@ -1,9 +1,10 @@
 package cars_project.service;
 
-
 import cars_project.dto.CarAprDTO;
 import cars_project.dto.CarNotReadyDto;
 import cars_project.dto.CarReadyDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -11,36 +12,39 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.IOException;
 
-@Service//version 1/5
+@Service
 public class CarPrepairService {
 
     @Autowired
-    private KafkaTemplate<String, Object> kafkaTemplate;
+    private KafkaTemplate<String, String> kafkaTemplate;
 
-    @KafkaListener(topics = "car_approve_dto_topic", groupId = "myGroup")
-    public void consumeCarAprDTO(CarAprDTO carAprDTO) {
-        processCarAprDTO(carAprDTO);
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @KafkaListener(topics = "car_approve_dto_topic", groupId = "car-prepair")
+    public void consumeCarAprDTO(String carAprDTOJson) {
+        try {
+            CarAprDTO carAprDTO = objectMapper.readValue(carAprDTOJson, CarAprDTO.class);
+            processCarAprDTO(carAprDTO);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void processCarAprDTO(CarAprDTO carAprDTO) {
-        if (!carAprDTO.isBumper()|| !carAprDTO.isClean()||!carAprDTO.isWindscreen()){
-            CarNotReadyDto CarNotReadyDto = createCarNotReadyDto(carAprDTO);
-
-            kafkaTemplate.send("car_dto_not_ready", CarNotReadyDto);
-        }else {
-            CarReadyDto carReadyDto=createCarReadyDto(carAprDTO);
-            kafkaTemplate.send("car_dto_ready", carReadyDto);
-
+        if (!carAprDTO.isBumper() || !carAprDTO.isClean() || !carAprDTO.isWindscreen()) {
+            CarNotReadyDto carNotReadyDto = createCarNotReadyDto(carAprDTO);
+            sendCarNotReadyDtoToKafka(carNotReadyDto);
+        } else {
+            CarReadyDto carReadyDto = createCarReadyDto(carAprDTO);
+            sendCarReadyDtoToKafka(carReadyDto);
         }
-
-
     }
 
-
-    public List<String> createCarPartsList(CarAprDTO carAprDTO) {
+    private List<String> createCarPartsList(CarAprDTO carAprDTO) {
         List<String> carPartsList = new ArrayList<>();
-
 
         if (!carAprDTO.isBumper()) {
             carPartsList.add("bumper");
@@ -51,13 +55,10 @@ public class CarPrepairService {
         if (!carAprDTO.isClean()) {
             carPartsList.add("clean");
         }
-
-
         return carPartsList;
     }
 
-
-    public CarNotReadyDto createCarNotReadyDto(CarAprDTO carAprDTO) {
+    private CarNotReadyDto createCarNotReadyDto(CarAprDTO carAprDTO) {
         CarNotReadyDto carNotReadyDto = new CarNotReadyDto();
         carNotReadyDto.setNumber(carAprDTO.getNumber());
         carNotReadyDto.setVin(carAprDTO.getVin());
@@ -71,12 +72,11 @@ public class CarPrepairService {
         carNotReadyDto.setYears(carAprDTO.getYears());
         carNotReadyDto.setMileage(carAprDTO.getMileage());
         carNotReadyDto.setPrice(carAprDTO.getPrice());
-
         carNotReadyDto.setCarPartsList(createCarPartsList(carAprDTO));
-
         return carNotReadyDto;
     }
-    public CarReadyDto createCarReadyDto(CarAprDTO carAprDTO) {
+
+    private CarReadyDto createCarReadyDto(CarAprDTO carAprDTO) {
         CarReadyDto carReadyDto = new CarReadyDto();
         carReadyDto.setNumber(carAprDTO.getNumber());
         carReadyDto.setVin(carAprDTO.getVin());
@@ -90,11 +90,24 @@ public class CarPrepairService {
         carReadyDto.setYears(carAprDTO.getYears());
         carReadyDto.setMileage(carAprDTO.getMileage());
         carReadyDto.setPrice(carAprDTO.getPrice());
-
-
-
         return carReadyDto;
     }
 
+    private void sendCarNotReadyDtoToKafka(CarNotReadyDto carNotReadyDto) {
+        try {
+            String carNotReadyDtoJson = objectMapper.writeValueAsString(carNotReadyDto);
+            kafkaTemplate.send("car_dto_not_ready", carNotReadyDtoJson);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
 
+    private void sendCarReadyDtoToKafka(CarReadyDto carReadyDto) {
+        try {
+            String carReadyDtoJson = objectMapper.writeValueAsString(carReadyDto);
+            kafkaTemplate.send("car_dto_ready", carReadyDtoJson);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
 }
