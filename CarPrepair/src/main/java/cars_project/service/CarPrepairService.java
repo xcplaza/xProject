@@ -38,7 +38,7 @@ public class CarPrepairService {
     }
 
 
-    private  List<String> createCarPartsList(CarAprDTO carAprDTO) {
+    public List<String> createCarPartsList(CarAprDTO carAprDTO) {
         List<String> carPartsList = new ArrayList<>();
 
 
@@ -57,7 +57,7 @@ public class CarPrepairService {
     }
 
 
-    private CarNotReadyDto createCarNotReadyDto(CarAprDTO carAprDTO) {
+    public CarNotReadyDto createCarNotReadyDto(CarAprDTO carAprDTO) {
         CarNotReadyDto carNotReadyDto = new CarNotReadyDto();
         carNotReadyDto.setNumber(carAprDTO.getNumber());
         carNotReadyDto.setVin(carAprDTO.getVin());
@@ -76,7 +76,7 @@ public class CarPrepairService {
 
         return carNotReadyDto;
     }
-    private CarReadyDto createCarReadyDto(CarAprDTO carAprDTO) {
+    public CarReadyDto createCarReadyDto(CarAprDTO carAprDTO) {
         CarReadyDto carReadyDto = new CarReadyDto();
         carReadyDto.setNumber(carAprDTO.getNumber());
         carReadyDto.setVin(carAprDTO.getVin());
