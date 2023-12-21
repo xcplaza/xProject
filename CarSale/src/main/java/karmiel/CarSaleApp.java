@@ -1,14 +1,13 @@
-package cars_project;
+package karmiel;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.kafka.annotation.EnableKafka;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
-@EnableKafka
-public class Main {
+@EnableScheduling
+public class CarSaleApp {
     public static void main(String[] args) {
-
-        SpringApplication.run(Main.class, args);
+        SpringApplication.run(CarSaleApp.class, args);
     }
 }
