@@ -2,11 +2,13 @@ package karmiel.dto;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.*;
 
 @Entity
 @Data
 @NoArgsConstructor
+@Table(name = "auto") // Указываем имя таблицы
 public class CarDTO {
     @Id
     private int number;
