@@ -23,6 +23,7 @@
         <module>CarRepair</module>
         <module>CarSale</module>
         <module>CarApprove</module>
+        <module>SaleGenerator</module>
     </modules>
     <properties>
         <java.version>17</java.version>
