@@ -6,13 +6,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
 public class DatabaseAccessor {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/cars";
     private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "root";
     private Connection connection;  // Убедитесь, что поле объявлено как private
 
+    public void setConnection(Connection connection) {
+        this.connection = connection;
+    }
 
     public String getBrandFromDatabase() throws SQLException {
         return getDataFromDatabase("SELECT name FROM brands ORDER BY RAND() LIMIT 1", "name");
@@ -35,7 +37,4 @@ public class DatabaseAccessor {
         return null;
     }
 
-    public void setConnection(Connection connection) {
-        this.connection = connection;
-    }
 }

@@ -5,14 +5,11 @@ import karmiel.dto.CarDTO;
 import karmiel.producer.CarProducer;
 import karmiel.service.DatabaseAccessor;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -25,8 +22,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.*;
 
 //@ExtendWith(MockitoExtension.class)
 
@@ -150,8 +147,8 @@ public class CarGeneratorTest {
         // Вызываем метод, который мы хотим протестировать
         String result = databaseAccessor.getBrandFromDatabase();
 
-        // Проверяем, что результат соответствует ожиданиям
-        assertTrue(result.matches(".*")); // Любая строка, включая пустую
+        // Проверяем, что результат соответствует ожиданиям (с использованием регулярного выражения)
+        assertTrue(result.matches(".*TestBrand.*"));
 
         // Проверяем, что методы были вызваны с ожидаемыми параметрами
         verify(connection).prepareStatement(anyString());

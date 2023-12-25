@@ -2,47 +2,68 @@ package karmiel;
 
 import karmiel.producer.CarProducer;
 import karmiel.service.DatabaseAccessor;
-import karmiel.service.RandomCarGenerator;
-import org.apache.kafka.clients.producer.Producer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.apache.kafka.clients.producer.ProducerRecord;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
-import static org.mockito.ArgumentMatchers.any;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import static org.mockito.Mockito.when;
+import org.junit.jupiter.api.BeforeEach;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.powermock.reflect.Whitebox;
+import org.springframework.test.util.ReflectionTestUtils;
 
-@SpringBootTest
-@SpringJUnitConfig
-class CarProducerTest {
 
-    @Mock
-    private RandomCarGenerator carGenerator;
-
+@ExtendWith(MockitoExtension.class)
+public class CarProducerTest {
     @Mock
     private DatabaseAccessor databaseAccessor;
 
     @Mock
-    private Producer<String, String> kafkaProducer;
+    private Connection connection;
+
+    @Mock
+    private PreparedStatement preparedStatement;
+
+    @Mock
+    private ResultSet resultSet;
 
     @InjectMocks
     private CarProducer carProducer;
 
+    @BeforeEach
+    public void setUp() throws SQLException {
+        // Устанавливаем поведение моков
+        when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+        when(preparedStatement.executeQuery()).thenReturn(resultSet);
+        when(resultSet.next()).thenReturn(true);
+        when(resultSet.getString("name")).thenReturn("TestBrand");
+
+        // Устанавливаем мок в databaseAccessor
+        Whitebox.setInternalState(carProducer, "databaseAccessor", databaseAccessor);
+        Whitebox.setInternalState(databaseAccessor, "connection", connection);
+    }
+
+
     @Test
-    void testGenerateAndSendCar() throws Exception {
-        // Arrange
-        when(databaseAccessor.getBrandFromDatabase()).thenReturn("Toyota");
-        when(databaseAccessor.getModelFromDatabase()).thenReturn("Camry");
-        when(carGenerator.generateRandomYear()).thenReturn(2020);
-        when(carGenerator.generateRandomMileage()).thenReturn(50000);
-        // Добавьте другие необходимые утверждения для вашего теста
+    public void testGetBrandFromDatabase() throws SQLException {
+        // Вызываем метод, который мы хотим протестировать
+        String result = databaseAccessor.getBrandFromDatabase();
 
-        // Act
-        carProducer.generateAndSendCar();
+        // Проверяем, что результат соответствует ожиданиям
+        assertTrue(result.matches(".*TestBrand.*"));
 
-        // Assert
-        verify(kafkaProducer).send(any(ProducerRecord.class));
+        // Проверяем, что методы были вызваны с ожидаемыми параметрами
+        verify(connection).prepareStatement(anyString());
+        verify(preparedStatement).executeQuery();
+        verify(resultSet).next();
+        verify(resultSet).getString("name");
     }
 }
