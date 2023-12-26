@@ -6,11 +6,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class DatabaseAccessor {
+public class DatabaseAccessor implements DatabaseAccessorInterface {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/cars";
     private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "root";
-    private Connection connection;  // Убедитесь, что поле объявлено как private
+    private Connection connection;
 
     public void setConnection(Connection connection) {
         this.connection = connection;
